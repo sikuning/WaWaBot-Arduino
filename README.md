@@ -9,7 +9,8 @@ Cukup install library, hubungkan WiFi, lalu panggil class `WaWaBot` untuk pairin
 | Item | Keterangan |
 |------|------------|
 | Board | ESP32 atau ESP8266 dengan WiFi |
-| Arduino IDE | 1.8.x atau 2.x |
+| Arduino IDE | 1.8.x atau 2.x (opsional) |
+| PlatformIO | VS Code + extension PlatformIO (opsional) |
 | Kredensial | `apiKey` dan `accountId` dari penyedia layanan WaWaBot |
 | Koneksi | WiFi aktif sebelum memanggil method library |
 
@@ -43,6 +44,132 @@ Atau lewat Arduino CLI:
 ```bash
 arduino-cli lib install WaWaBot
 ```
+
+### PlatformIO
+
+Library yang **sama** bisa dipakai di PlatformIO. API dan class `WaWaBot` identik dengan Arduino IDE — bedanya hanya cara install (lewat `platformio.ini`).
+
+#### Install via `lib_deps` (disarankan)
+
+Tambahkan di `platformio.ini`:
+
+```ini
+lib_deps =
+    https://github.com/sikuning/WaWaBot-Arduino.git#1.0.0
+```
+
+Versi terbaru dari branch `main` (tanpa pin tag):
+
+```ini
+lib_deps =
+    https://github.com/sikuning/WaWaBot-Arduino.git
+```
+
+#### Contoh `platformio.ini` — ESP32
+
+```ini
+[env:esp32dev]
+platform = espressif32
+board = esp32dev
+framework = arduino
+monitor_speed = 115200
+
+lib_deps =
+    https://github.com/sikuning/WaWaBot-Arduino.git#1.0.0
+```
+
+#### Contoh `platformio.ini` — ESP8266
+
+```ini
+[env:nodemcuv2]
+platform = espressif8266
+board = nodemcuv2
+framework = arduino
+monitor_speed = 115200
+
+lib_deps =
+    https://github.com/sikuning/WaWaBot-Arduino.git#1.0.0
+```
+
+#### Contoh kode (`src/main.cpp`)
+
+```cpp
+#include <Arduino.h>
+#include <WiFi.h>
+#include <WaWaBot.h>
+
+const char* WIFI_SSID = "nama-wifi";
+const char* WIFI_PASS = "password-wifi";
+const char* API_KEY = "api-key-anda";
+const char* ACCOUNT_ID = "user-1";
+
+WaWaBot bot(API_KEY, ACCOUNT_ID);
+
+void setup() {
+  Serial.begin(115200);
+
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+  }
+
+  bot.begin();
+
+  if (bot.sendText("6281234567890", "Halo dari PlatformIO!")) {
+    Serial.println(bot.lastResponse());
+  } else {
+    Serial.print("HTTP ");
+    Serial.println(bot.lastHttpCode());
+    Serial.println(bot.lastError());
+  }
+}
+
+void loop() {}
+```
+
+#### Perintah CLI
+
+```bash
+pio pkg install          # install lib_deps
+pio run                  # compile
+pio run -t upload        # upload ke board
+pio device monitor       # serial monitor
+```
+
+#### Struktur project PlatformIO
+
+```text
+my-wawabot-project/
+├── platformio.ini
+└── src/
+    └── main.cpp
+```
+
+Contoh sketch Arduino ada di folder `examples/` repo ini. Salin logika ke `src/main.cpp`, atau buka folder `examples/SendText/` sebagai referensi.
+
+#### Install manual (opsional)
+
+Salin folder library ke `lib/WaWaBot/` di root project PlatformIO:
+
+```text
+my-project/
+├── lib/
+│   └── WaWaBot/          ← isi repo library (src/, library.properties, ...)
+├── platformio.ini
+└── src/
+    └── main.cpp
+```
+
+#### Arduino IDE vs PlatformIO
+
+| | Arduino IDE | PlatformIO |
+|---|-------------|------------|
+| Install library | Library Manager / ZIP / folder `libraries` | `lib_deps` di `platformio.ini` |
+| Konfigurasi board | Menu Tools | `board` di `platformio.ini` |
+| Kode utama | `*.ino` di root sketch | `src/main.cpp` |
+| Class & API | `WaWaBot` | `WaWaBot` (sama) |
+
+> **Catatan:** Library Manager Arduino dan registry PlatformIO terpisah. Setelah WaWaBot terdaftar di Arduino Library Manager, di PlatformIO tetap paling mudah memakai URL GitHub di `lib_deps`.
 
 ## Publikasi ke Arduino Library Manager
 
