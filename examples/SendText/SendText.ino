@@ -26,7 +26,7 @@ void setup() {
   }
   Serial.println("\nWiFi OK");
 
-  bot.begin();  // host default: https://wa-api.knn.my.id
+  bot.begin();  // host default: https://wa-api.wawabot.id
 
   if (bot.sendText("6281234567890", "Halo dari Arduino WaWaBot!")) {
     Serial.println("Pesan terkirim");

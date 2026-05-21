@@ -16,7 +16,7 @@
 #endif
 
 /**
- * Client HTTP untuk API WaWaBot (https://wa-api.knn.my.id).
+ * Client HTTP untuk API WaWaBot (https://wa-api.wawabot.id).
  *
  * Alur pairing:
  *   1. start()           -> POST /accounts/{id}/start
@@ -27,12 +27,12 @@
  */
 class WaWaBot {
 public:
-  static constexpr const char* DEFAULT_HOST = "wa-api.knn.my.id";
+  static constexpr const char* DEFAULT_HOST = "wa-api.wawabot.id";
   static constexpr uint16_t DEFAULT_PORT = 443;
 
   WaWaBot(const char* apiKey, const char* accountId);
 
-  /** Atur host API (default: wa-api.knn.my.id:443). */
+  /** Atur host API (default: wa-api.wawabot.id:443). */
   void begin(const char* host = DEFAULT_HOST, uint16_t port = DEFAULT_PORT,
              bool skipCertificateVerify = true);
 

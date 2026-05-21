@@ -1,6 +1,6 @@
 # WaWaBot
 
-Library Arduino untuk mengirim pesan WhatsApp dari **ESP32** atau **ESP8266** melalui [WaWaBot API](https://wa-api.knn.my.id).
+Library Arduino untuk mengirim pesan WhatsApp dari **ESP32** atau **ESP8266** melalui [WaWaBot API](https://wa-api.wawabot.id).
 
 Cukup install library, hubungkan WiFi, lalu panggil class `WaWaBot` untuk pairing perangkat, kirim teks, atau kirim gambar.
 
@@ -272,7 +272,7 @@ flowchart LR
 Library memakai host resmi berikut (HTTPS):
 
 ```
-https://wa-api.knn.my.id
+https://wa-api.wawabot.id
 ```
 
 Setiap request mengirim header:
@@ -316,7 +316,7 @@ void setup() {
   WiFi.begin(WIFI_SSID, WIFI_PASS);
   while (WiFi.status() != WL_CONNECTED) delay(500);
 
-  bot.begin();  // default host: wa-api.knn.my.id
+  bot.begin();  // default host: wa-api.wawabot.id
 
   if (bot.sendText("6281234567890", "Halo dari Arduino!")) {
     Serial.println("Berhasil");
@@ -374,7 +374,7 @@ Lihat contoh lengkap di folder `examples/`:
 ```cpp
 WaWaBot bot("api-key", "user-1");
 bot.begin();  // host default, port 443, skip TLS verify = true
-bot.begin("wa-api.knn.my.id", 443, true);
+bot.begin("wa-api.wawabot.id", 443, true);
 ```
 
 ### Method
@@ -411,7 +411,7 @@ Gunakan nomor internasional tanpa tanda `+`, contoh:
 
 ## Endpoint yang dipanggil library
 
-Base URL: `https://wa-api.knn.my.id`
+Base URL: `https://wa-api.wawabot.id`
 
 ```
 POST   /accounts/{accountId}/start
